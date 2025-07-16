@@ -1,0 +1,61 @@
+#############################
+# .NET & Visual Studio
+#############################
+
+## Build outputs
+bin/
+obj/
+out/
+
+## User-specific files
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## IIS Express
+/.vs/
+
+## Rider / JetBrains
+.idea/
+
+## ASP.NET Publish folder
+publish/
+wwwroot/dist/
+
+## Logs
+*.log
+logs/
+log/
+
+## EF Core
+Migrations/*Snapshot.cs
+*.db
+
+#############################
+# Configuration / Secrets
+#############################
+
+# Environment & secrets
+*.env
+*.env.*
+secrets.json
+# appsettings.Development.json
+
+#############################
+# System files
+#############################
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Git merge conflicts
+*.orig
+*.rej
+*.patch

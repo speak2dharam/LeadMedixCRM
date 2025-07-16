@@ -1,0 +1,6 @@
+@LeadMedixCRM_HostAddress = http://localhost:5207
+
+GET {{LeadMedixCRM_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
