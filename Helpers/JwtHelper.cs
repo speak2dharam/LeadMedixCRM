@@ -5,12 +5,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-public interface IJwtHelper
-{
-    string GenerateToken(User user);
-}
+//public interface IJwtHelper
+//{
+//    string GenerateToken(User user);
+//}
 
-public class JwtHelper : IJwtHelper
+public class JwtHelper
 {
     private readonly IConfiguration _config;
 
@@ -26,7 +26,8 @@ public class JwtHelper : IJwtHelper
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role)
+            new Claim(ClaimTypes.Role, user.RoleId.ToString())
+            //new Claim(ClaimTypes.Role, user.Role)
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

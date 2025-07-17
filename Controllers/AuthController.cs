@@ -14,17 +14,20 @@ namespace LeadMedixCRM.Controllers
         {
             _authService = authService;
         }
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterDto dto)
+        [HttpPost("add-user")]
+        public async Task<IActionResult> AddUser(AddUserDto dto)
         {
-            var token = await _authService.RegisterAsync(dto);
-            return Ok(new { token });
+            var result = await _authService.AddUserAsync(dto);
+            return Ok(new { message = result });
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            var token = await _authService.LoginAsync(dto);
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+            var userAgent = Request.Headers["User-Agent"].ToString();
+
+            var token = await _authService.LoginAsync(dto, ip, userAgent);
             return Ok(new { token });
         }
     }

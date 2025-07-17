@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 using LeadMedixCRM.Models;
+using LeadMedixCRM.Helpers;
 
 
 namespace LeadMedixCRM.Services
@@ -12,49 +13,71 @@ namespace LeadMedixCRM.Services
     public class AuthService:IAuthService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IJwtHelper _jwtHelper;
-        public AuthService(ApplicationDbContext context, IJwtHelper jwtHelper)
+        private readonly JwtHelper _jwtHelper;
+        public AuthService(ApplicationDbContext context, JwtHelper jwtHelper)
         {
             _context = context;
             _jwtHelper = jwtHelper;
         }
-        public async Task<string> RegisterAsync(RegisterDto dto)
+        public async Task<string> AddUserAsync(AddUserDto dto)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
-                throw new Exception("User already exists");
+            if (_context.Users.Any(u => u.Email == dto.Email))
+                throw new Exception("User already exists.");
 
             var user = new User
             {
                 FullName = dto.FullName,
                 Email = dto.Email,
-                PasswordHash = HashPassword(dto.Password),
-                Role = "User"
+                Mobile=dto.Mobile,
+                RoleId = dto.RoleId,
+                //PasswordHash = PasswordHasher.HashPassword(dto.Password),
+                PasswordHash = dto.Password,
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return _jwtHelper.GenerateToken(user);
+            return "User added successfully.";
         }
-        public async Task<string> LoginAsync(LoginDto dto)
+        public async Task<string> LoginAsync(LoginDto dto, string ip, string device)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
-            if (user == null || !VerifyPassword(dto.Password, user.PasswordHash))
-                throw new Exception("Invalid credentials");
+            var user = _context.Users.FirstOrDefault(u => u.Email == dto.Email);
 
-            return _jwtHelper.GenerateToken(user);
-        }
-        private string HashPassword(string password)
-        {
-            using var sha256 = SHA256.Create();
-            var hashed = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            Console.WriteLine("Register hash: " + hashed);
-            return Convert.ToBase64String(hashed);
-        }
+            if (user == null || !PasswordHasher.Verify(dto.Password, user.PasswordHash))
+                throw new Exception("Invalid email or password.");
 
-        private bool VerifyPassword(string password, string storedHash)
-        {
-            return HashPassword(password) == storedHash;
+            if (!user.IsActive)
+                throw new Exception("User is disabled.");
+
+            // Save login history
+            //_context.LoginHistories.Add(new LoginHistory
+            //{
+            //    UserId = user.Id,
+            //    IPAddress = ip,
+            //    LoginTime = DateTime.UtcNow
+            //});
+
+            // Save device info
+            //_context.UserDevices.Add(new UserDevice
+            //{
+            //    UserId = user.Id,
+            //    DeviceInfo = device,
+            //    IPAddress = ip,
+            //    LastUsed = DateTime.UtcNow
+            //});
+            var getToken = _jwtHelper.GenerateToken(user);
+
+            _context.UserTokens.Add(new UserToken
+            {
+                UserId = user.Id,
+                Token = getToken
+            });
+
+            await _context.SaveChangesAsync();
+
+            return getToken;
         }
     }
     

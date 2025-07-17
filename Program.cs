@@ -1,5 +1,7 @@
-using LeadMedixCRM.Data;
+﻿using LeadMedixCRM.Data;
 using LeadMedixCRM.Interfaces;
+using LeadMedixCRM.Middlewares;
+using LeadMedixCRM.Models;
 using LeadMedixCRM.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -8,13 +10,25 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("*") // ✅ Angular dev server
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+              //.AllowCredentials(); // Optional if you use cookies
+    });
+});
+
 // Add services to the container.
 // 1. Add DbContext (EF Core)
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 2. Add custom services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IJwtHelper, JwtHelper>();
+builder.Services.AddScoped<JwtHelper>();
+builder.Services.AddScoped<IRoleService, RoleService>();
 
 // 3. Add JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -49,10 +63,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
+
+app.UseMiddleware<TokenValidationMiddleware>();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+
