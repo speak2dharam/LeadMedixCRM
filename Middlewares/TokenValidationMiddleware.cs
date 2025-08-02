@@ -19,7 +19,7 @@ namespace LeadMedixCRM.Middlewares
         {
             var path = context.Request.Path.ToString().ToLower();
 
-            if (path.Contains("/auth/login") || path.Contains("/adduser"))
+            if (path.Contains("/auth/login") || path.Contains("/auth/add-user"))
             {
                 await _next(context);
                 return;

@@ -24,10 +24,10 @@ namespace LeadMedixCRM.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)
         {
-            var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
-            var userAgent = Request.Headers["User-Agent"].ToString();
+            //var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
+            //var userAgent = Request.Headers["User-Agent"].ToString();
 
-            var token = await _authService.LoginAsync(dto, ip, userAgent);
+            var token = await _authService.LoginAsync(dto);
             return Ok(new { token });
         }
     }

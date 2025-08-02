@@ -41,7 +41,7 @@ namespace LeadMedixCRM.Services
 
             return "User added successfully.";
         }
-        public async Task<string> LoginAsync(LoginDto dto, string ip, string device)
+        public async Task<string> LoginAsync(LoginDto dto)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email == dto.Email);
 
