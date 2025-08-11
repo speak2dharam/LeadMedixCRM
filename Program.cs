@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+//For Leads
+builder.Services.AddScoped<ILeadSourceService, LeadSourceService>();
 
 // 3. Add JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,6 +49,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("Logs/app_log.txt", 
+    rollingInterval: RollingInterval.Day, 
+    retainedFileCountLimit: 30,
+    outputTemplate: "{NewLine}==================== ERROR START ===================={NewLine}{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}{NewLine}==================== ERROR END ===================={NewLine}"
+    )
+    .WriteTo.Console()
+    .Enrich.FromLogContext()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -67,6 +82,9 @@ app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 
+// Use Global Exception Middleware
+app.UseMiddleware<GlobalExceptionMiddleware>();
+// Your token validation middleware
 app.UseMiddleware<TokenValidationMiddleware>();
 
 app.UseAuthorization();

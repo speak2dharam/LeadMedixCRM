@@ -1,5 +1,6 @@
 ﻿using LeadMedixCRM.DTOs;
 using LeadMedixCRM.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,8 +28,31 @@ namespace LeadMedixCRM.Controllers
             //var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "Unknown";
             //var userAgent = Request.Headers["User-Agent"].ToString();
 
-            var token = await _authService.LoginAsync(dto);
-            return Ok(new { token });
+            //var token = await _authService.LoginAsync(dto);
+            //return Ok(new { token });
+            var response = await _authService.LoginAsync(dto);
+            return Ok(response);
+        }
+
+        [HttpPost("logout")]
+        [Authorize]
+        public IActionResult Logout()
+        {
+            var authHeader = Request.Headers["Authorization"].ToString();
+
+            if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+                return BadRequest("Invalid token");
+
+            var token = authHeader.Substring("Bearer ".Length).Trim();
+
+            // Pass the token to your service to mark as revoked
+            var result = _authService.Logout(token);
+
+            if (!result)
+                return NotFound("Token not found");
+
+            //return Ok("Token revoked successfully");
+            return Ok(new { message = "Token revoked successfully." });
         }
     }
 }

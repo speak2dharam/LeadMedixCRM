@@ -18,5 +18,21 @@ namespace LeadMedixCRM.Data
         public DbSet<UserDevice> UserDevices { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }
         public DbSet<UserActivity> UserActivities { get; set; }
+        //Lead
+        public DbSet<Lead> Lead { get; set; }
+        public DbSet<LeadAssignment> LeadAssignments { get; set; }
+        public DbSet<LeadHistory> LeadHistory { get; set; }
+        public DbSet<LeadQuality> LeadQuality { get; set; }
+        public DbSet<LeadSource> LeadSource { get; set; }
+        public DbSet<LeadStatus> LeadStatus { get; set; }
+        public DbSet<PatientMedicalInfo> PatientMedicalInfo { get; set; }
+        public DbSet<TreatmentCategory> TreatmentCategory { get; set; }
+        
+        //Hospital
+        public DbSet<Hospital> Hospital { get; set; }
+        public DbSet<HospitalCoordinator> HospitalCoordinator { get; set; }
+
+        //Doctor
+        public DbSet<Doctor> Doctor { get; set; }
     }
 }
