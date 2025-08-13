@@ -2,7 +2,8 @@
 {
     public class LeadStatusDto
     {
-        public int LeadStatusId { get; set; }
+        public int StatusId { get; set; }
         public string StatusName { get; set; }
+        public string Description { get; set; }
     }
 }

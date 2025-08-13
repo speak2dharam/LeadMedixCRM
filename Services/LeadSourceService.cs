@@ -25,17 +25,17 @@ namespace LeadMedixCRM.Services
                 throw new Exception("Source already exists.");
                 //throw new ConflictException("Source already exists.");
 
-            var LeadSource = new LeadSource { SourceName = dto.SourceName };
+            var LeadSource = new LeadSource { SourceName = dto.SourceName,Description=dto.Description };
             _context.LeadSource.Add(LeadSource);
             await _context.SaveChangesAsync();
 
             return "Source added successfully.";
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> Delete(int LeadSourceId)
         {
             //throw new NotImplementedException();
-            var existing = await _context.LeadSource.FindAsync(id);
+            var existing = await _context.LeadSource.FindAsync(LeadSourceId);
             if (existing == null) throw new Exception("Source not found.");
 
             _context.LeadSource.Remove(existing);
@@ -44,20 +44,21 @@ namespace LeadMedixCRM.Services
             return true;
         }
 
-        public async Task<LeadSourceDto> GetById(int id)
+        public async Task<LeadSourceDto> GetById(int LeadSourceId)
         {
             //return await _context.LeadSource.FindAsync(id);
-            var entity = await _context.LeadSource.FindAsync(id);
+            var entity = await _context.LeadSource.FindAsync(LeadSourceId);
             if (entity == null) return null;
 
             return new LeadSourceDto
             {
                 LeadSourceId = entity.LeadSourceId,
-                SourceName = entity.SourceName
+                SourceName = entity.SourceName,
+                Description = entity.Description
             };
         }
 
-        public async Task<LeadSourceDto> Update(int id, LeadSourceDto dto)
+        public async Task<LeadSourceDto> Update(int LeadSourceId, LeadSourceDto dto)
         {
             //var existing = await _context.LeadSource.FindAsync(id);
             //if (existing == null) throw new Exception("Source not found.");
@@ -67,10 +68,15 @@ namespace LeadMedixCRM.Services
 
             //return existing;
 
-            var existing = await _context.LeadSource.FindAsync(id);
+            var existing = await _context.LeadSource.FindAsync(LeadSourceId);
             if (existing == null) throw new Exception("Source not found.");
+            if (existing.SourceName == dto.SourceName)
+            {
+                throw new Exception("Source already found.");
+            }
 
             existing.SourceName = dto.SourceName;
+            existing.Description = dto.Description;
             await _context.SaveChangesAsync();
 
             // Map entity to DTO before returning

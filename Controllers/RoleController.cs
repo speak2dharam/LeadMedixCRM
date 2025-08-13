@@ -27,10 +27,10 @@ namespace LeadMedixCRM.Controllers
             return Ok(roles);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{RoleID}")]
+        public async Task<IActionResult> Get(int RoleID)
         {
-            var role = await _roleService.GetByIdAsync(id);
+            var role = await _roleService.GetByIdAsync(RoleID);
             if (role == null) return NotFound();
             return Ok(role);
         }
@@ -42,17 +42,17 @@ namespace LeadMedixCRM.Controllers
             return Ok(new { message = result });
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, RoleDto dto)
+        [HttpPut("{RoleID}")]
+        public async Task<IActionResult> Update(int RoleID, RoleDto dto)
         {
-            var result = await _roleService.UpdateAsync(id, dto);
+            var result = await _roleService.UpdateAsync(RoleID, dto);
             return Ok(new { message = result });
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{RoleID}")]
+        public async Task<IActionResult> Delete(int RoleID)
         {
-            var result = await _roleService.DeleteAsync(id);
+            var result = await _roleService.DeleteAsync(RoleID);
             return Ok(new { message = result });
         }
     }

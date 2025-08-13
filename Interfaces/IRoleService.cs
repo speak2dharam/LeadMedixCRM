@@ -6,9 +6,9 @@ namespace LeadMedixCRM.Interfaces
     public interface IRoleService
     {
         Task<IEnumerable<Role>> GetAllAsync();
-        Task<Role?> GetByIdAsync(int id);
+        Task<Role?> GetByIdAsync(int RoleID);
         Task<string> AddAsync(RoleDto dto);
-        Task<string> UpdateAsync(int id, RoleDto dto);
-        Task<string> DeleteAsync(int id);
+        Task<string> UpdateAsync(int RoleID, RoleDto dto);
+        Task<string> DeleteAsync(int RoleID);
     }
 }

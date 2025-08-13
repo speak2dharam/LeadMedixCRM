@@ -9,5 +9,6 @@ namespace LeadMedixCRM.Models
 
         [Required, MaxLength(20)]
         public string QualityName { get; set; }
+        public string Description { get; set; }
     }
 }

@@ -18,5 +18,7 @@ namespace LeadMedixCRM.Models
         public string WhatsApp { get; set; }
 
         public string Email { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

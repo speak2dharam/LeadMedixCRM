@@ -11,7 +11,7 @@ namespace LeadMedixCRM.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class LeadSourceController : ControllerBase
     {
         private readonly ILeadSourceService _leadSourceService;
@@ -27,10 +27,10 @@ namespace LeadMedixCRM.Controllers
             return Ok(leadsource);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        [HttpGet("{LeadSourceId}")]
+        public async Task<IActionResult> GetById(int LeadSourceId)
         {
-            var source = _leadSourceService.GetById(id);
+            var source = await _leadSourceService.GetById(LeadSourceId);
             if (source == null) return NotFound();
             return Ok(source);
         }

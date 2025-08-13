@@ -32,6 +32,8 @@ builder.Services.AddScoped<JwtHelper>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 //For Leads
 builder.Services.AddScoped<ILeadSourceService, LeadSourceService>();
+builder.Services.AddScoped<ILeadStatusService, LeadStatusService>();
+builder.Services.AddScoped<ILeadQualityService, LeadQualityService>();
 
 // 3. Add JWT authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -19,14 +19,14 @@ public class JwtHelper
         _config = config;
     }
 
-    public string GenerateToken(User user)
+    public string GenerateToken(User user,string RoleName)
     {
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.RoleId.ToString())
+            new Claim(ClaimTypes.Role, RoleName),
             //new Claim(ClaimTypes.Role, user.Role)
         };
 

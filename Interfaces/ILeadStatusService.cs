@@ -1,13 +1,14 @@
 ﻿using LeadMedixCRM.DTOs;
+using LeadMedixCRM.Models;
 
 namespace LeadMedixCRM.Interfaces
 {
     public interface ILeadStatusService
     {
-        IEnumerable<LeadStatusDto> GetAll();
-        LeadStatusDto GetById(int id);
-        LeadStatusDto Create(LeadStatusDto dto);
-        LeadStatusDto Update(int id, LeadStatusDto dto);
-        bool Delete(int id);
+        Task<IEnumerable<LeadStatus>> GetAllAsync();
+        Task<LeadStatusDto> GetById(int StatusId);
+        Task<string> Create(LeadStatusDto dto);
+        Task<LeadStatusDto> Update(int StatusId, LeadStatusDto dto);
+        Task<bool> Delete(int StatusId);
     }
 }

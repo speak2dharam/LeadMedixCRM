@@ -1,13 +1,14 @@
 ﻿using LeadMedixCRM.DTOs;
+using LeadMedixCRM.Models;
 
 namespace LeadMedixCRM.Interfaces
 {
     public interface ILeadQualityService
     {
-        IEnumerable<LeadQualityDto> GetAll();
-        LeadQualityDto GetById(int id);
-        LeadQualityDto Create(LeadQualityDto dto);
-        LeadQualityDto Update(int id, LeadQualityDto dto);
-        bool Delete(int id);
+        Task<IEnumerable<LeadQuality>> GetAllAsync();
+        Task<LeadQualityDto> GetById(int LeadQualityId);
+        Task<string> Create(LeadQualityDto dto);
+        Task<LeadQualityDto> Update(int LeadQualityId, LeadQualityDto dto);
+        Task<bool> Delete(int LeadQualityId);
     }
 }

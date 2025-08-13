@@ -1,8 +1,12 @@
-﻿namespace LeadMedixCRM.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace LeadMedixCRM.Models
 {
     public class Role
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;// e.g., "Admin", "Coordinator", "Doctor"
+        [Key]
+        public int RoleID { get; set; }
+        public string RoleName { get; set; } = string.Empty;// e.g., "Admin", "Coordinator", "Doctor"
+        public string Description { get; set; }
     }
 }

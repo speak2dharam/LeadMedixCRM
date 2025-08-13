@@ -20,5 +20,6 @@ namespace LeadMedixCRM.Models
         public decimal EstimatedCost { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public int CreatedBy { get; set; }
     }
 }

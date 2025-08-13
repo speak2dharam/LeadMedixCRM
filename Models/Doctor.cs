@@ -18,5 +18,8 @@ namespace LeadMedixCRM.Models
         public string OtherSpecializationsCsv { get; set; } // Comma-separated: "Cardiology, Oncology"
 
         public string ProfileFilePath { get; set; } // Path or URL to doctor profile PDF
+        public int CreatedBy { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

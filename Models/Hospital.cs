@@ -16,5 +16,8 @@ namespace LeadMedixCRM.Models
 
         public string ContactPerson { get; set; }
         public string ContactNumber { get; set; }
+        public int CreatedBy { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

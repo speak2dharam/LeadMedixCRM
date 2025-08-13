@@ -69,7 +69,9 @@ namespace LeadMedixCRM.Services
                     throw new Exception("User is disabled.");
                 else
                 {
-                    var getToken = _jwtHelper.GenerateToken(user);
+                    var getRoleName=_context.Roles.Where(r=>r.RoleID==user.RoleId).Select(r=>r.RoleName).FirstOrDefault();
+
+                    var getToken = _jwtHelper.GenerateToken(user, getRoleName);
 
                     _context.UserTokens.Add(new UserToken
                     {
