@@ -34,5 +34,7 @@ namespace LeadMedixCRM.Data
 
         //Doctor
         public DbSet<Doctor> Doctor { get; set; }
+
+        public DbSet<Country> Country { get; set; }
     }
 }

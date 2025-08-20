@@ -1,6 +1,6 @@
 ﻿namespace LeadMedixCRM.DTOs
 {
-    public class AuthUser
+    public class AuthUserDto
     {
         public int UserId { get; set; }
         public string Role { get; set; }

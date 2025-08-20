@@ -5,9 +5,9 @@ namespace LeadMedixCRM.Helpers
 {
     public static class AuthClaimsHelper
     {
-        public static AuthUser GetAuthUser(ClaimsPrincipal user)
+        public static AuthUserDto GetAuthUser(ClaimsPrincipal user)
         {
-            return new AuthUser
+            return new AuthUserDto
             {
                 UserId = int.TryParse(user.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id) ? id : 0,
                 Role = user.FindFirst(ClaimTypes.Role)?.Value?? "",

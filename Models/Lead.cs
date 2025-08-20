@@ -14,7 +14,7 @@ namespace LeadMedixCRM.Models
         [MaxLength(10)]
         public string Gender { get; set; }
         [MaxLength(50)]
-        public string Nationality { get; set; }
+        public int CountryID { get; set; }
 
         [MaxLength(20)]
         public string ContactNumber { get; set; }
@@ -23,14 +23,14 @@ namespace LeadMedixCRM.Models
 
         [MaxLength(100)]
         public string Email { get; set; }
-
-        public int LeadSourceId { get; set; }
+        public string MedicalIssue { get; set; }
         public int TreatmentCategoryId { get; set; }
+        public int LeadSourceId { get; set; }
         public int LeadQualityId { get; set; }
 
         public int StatusId { get; set; }
 
-        public int CreatedByUserId { get; set; }
+        public int CreatedBy { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
